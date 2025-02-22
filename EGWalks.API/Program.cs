@@ -16,6 +16,7 @@ builder.Services.AddDbContext<EGWalksDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("EGWalksDbConnectionString")));
 
 builder.Services.AddScoped<IRegionRepository, SqlRegionRepository>();
+builder.Services.AddScoped<IWalkRepository, SqlWalkRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 var app = builder.Build();

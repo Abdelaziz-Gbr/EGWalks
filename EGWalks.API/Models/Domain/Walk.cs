@@ -1,4 +1,6 @@
-﻿namespace EGWalks.API.Models.Domain
+﻿using Microsoft.IdentityModel.Tokens;
+
+namespace EGWalks.API.Models.Domain
 {
     public class Walk
     {
@@ -21,5 +23,15 @@
         public Difficulty Difficulty { get; set; }
 
         public Region Region { get; set; }
+
+        public void Update(Walk newWalk)
+        {
+            Name = newWalk.Name;
+            Description = newWalk.Description;
+            LengthInKM = newWalk.LengthInKM;
+            WalkImageUrl = newWalk.WalkImageUrl;
+            DifficultyId = newWalk.DifficultyId;
+            RegionId = newWalk.RegionId;
+        }
     }
 }
