@@ -44,6 +44,10 @@ namespace EGWalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRegion([FromBody] AddRegionRequestDto addRegionDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             //convert addDto to data model
             var regionModel = mapper.Map<Region>(addRegionDto);
 
@@ -61,6 +65,11 @@ namespace EGWalks.API.Controllers
         [Route("{Id}")]
         public async Task<IActionResult >UpdateRegion([FromRoute] Guid Id, [FromBody] UpdateRegionRequestDto updateRegionDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var regionModel = await  regionRepository.UpdateRegionAsync(Id, mapper.Map<Region>(updateRegionDto));
 
             if(regionModel == null)

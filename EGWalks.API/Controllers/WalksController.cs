@@ -2,7 +2,6 @@
 using EGWalks.API.Models.Domain;
 using EGWalks.API.Models.Dto;
 using EGWalks.API.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EGWalks.API.Controllers
@@ -23,6 +22,7 @@ namespace EGWalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddWalk([FromBody]AddWalkRequestDto addWalkDto)
         {
+
             var walkDomain = mapper.Map<Walk>(addWalkDto);
 
             walkDomain = await repository.AddWalkAsync(walkDomain);
@@ -61,6 +61,12 @@ namespace EGWalks.API.Controllers
         [Route("{Id:Guid}")]
         public async Task<IActionResult> UpdateWalk([FromRoute]Guid Id, [FromBody]UpdateWalkDto updateWalkDto)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var walk = await repository.UpdateWalkAsync(Id, mapper.Map<Walk>(updateWalkDto));
             if(walk == null)
             {
