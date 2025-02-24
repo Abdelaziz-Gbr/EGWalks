@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using EGWalks.API.Data;
-using EGWalks.API.Mappings;
 using EGWalks.API.Models.Domain;
 using EGWalks.API.Models.Dto;
 using EGWalks.API.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EGWalks.API.Controllers

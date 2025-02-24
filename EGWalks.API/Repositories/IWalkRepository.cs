@@ -6,7 +6,10 @@ namespace EGWalks.API.Repositories
     {
         Task<Walk> AddWalkAsync(Walk walk);
 
-        Task<List<Walk>> GetAllWalksAsync();
+        Task<List<Walk>> GetWalksAsync(
+            string? FilterOn = null, string? FilterQuery = null,
+            string? SortOn = null, bool Asc = true,
+            int PageSize = 1000, int PageNo = 1);
 
         Task<Walk?> GetWalkByIdAsync(Guid id);
 

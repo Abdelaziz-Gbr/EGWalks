@@ -40,10 +40,38 @@ namespace EGWalks.API.Repositories
             return walk;
         }
 
-        public async Task<List<Walk>> GetAllWalksAsync()
+        public async Task<List<Walk>> GetWalksAsync(
+            string? FilterOn = null, string? FilterQuery = null,
+            string? SortOn = null, bool Asc = true,
+            int PageSize = 1000, int PageNo = 1)
         {
-            var walks = await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
-            return walks;
+            var walks = dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
+
+            // filtering.
+            if (!string.IsNullOrEmpty(FilterOn) && !string.IsNullOrEmpty(FilterQuery))
+            {
+                if (FilterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = walks.Where(walk => walk.Name.Contains(FilterQuery));
+                }
+            }
+
+            // sorting.
+            if(!string.IsNullOrWhiteSpace(SortOn))
+            {
+                if(SortOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = Asc ? walks.OrderBy(walk => walk.Name) : walks.OrderByDescending(walk => walk.Name);
+                }
+                else if (SortOn.Equals("LengthInKm", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = Asc ? walks.OrderBy(walk => walk.LengthInKM) : walks.OrderByDescending(walk => walk.LengthInKM);
+                }
+            }
+            // pagination
+            var skip = (PageNo - 1) * PageSize;
+            
+            return await walks.Skip(skip).Take(PageSize).ToListAsync();
         }
 
         public async Task<Walk?> GetWalkByIdAsync(Guid id)

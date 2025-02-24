@@ -38,9 +38,12 @@ namespace EGWalks.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetWalks()
+        public async Task<IActionResult> GetWalks(
+            [FromQuery] string? FilterOn,[FromQuery] string? FilterQuery,
+            [FromQuery] string? SortOn, [FromQuery] bool? Asc,
+            [FromQuery] int PageSize = 1000, [FromQuery] int PageNo = 1)
         {
-            var walks = await repository.GetAllWalksAsync();
+            var walks = await repository.GetWalksAsync(FilterOn, FilterQuery, SortOn, Asc ?? true, PageSize, PageNo);
 
             return Ok(mapper.Map<List<WalkDto>>(walks));
         }
