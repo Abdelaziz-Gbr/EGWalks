@@ -2,6 +2,7 @@
 using EGWalks.API.Models.Domain;
 using EGWalks.API.Models.Dto;
 using EGWalks.API.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EGWalks.API.Controllers
@@ -18,7 +19,9 @@ namespace EGWalks.API.Controllers
             this.regionRepository = regionRepository;
             this.mapper = mapper;
         }
+
         [HttpGet]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetAll() 
         { 
             var regionsDomain = await regionRepository.GetAllAsync();
@@ -28,6 +31,7 @@ namespace EGWalks.API.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> GetByID([FromRoute] Guid id)
         {
             var regionDomain = await regionRepository.GetByIdAsync(id);
@@ -39,6 +43,7 @@ namespace EGWalks.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> AddRegion([FromBody] AddRegionRequestDto addRegionDto)
         {
             if (!ModelState.IsValid)
@@ -60,6 +65,7 @@ namespace EGWalks.API.Controllers
 
         [HttpPut]
         [Route("{Id}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult >UpdateRegion([FromRoute] Guid Id, [FromBody] UpdateRegionRequestDto updateRegionDto)
         {
             if (!ModelState.IsValid)
@@ -77,6 +83,7 @@ namespace EGWalks.API.Controllers
 
         [HttpDelete]
         [Route("{Id}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> DeleteRegion([FromRoute] Guid Id) { 
             var regionModel = await regionRepository.DeleteRegionAsync(Id);
             if (regionModel == null)

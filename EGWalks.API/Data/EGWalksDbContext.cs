@@ -5,7 +5,7 @@ namespace EGWalks.API.Data
 {
     public class EGWalksDbContext : DbContext
     {
-        public EGWalksDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions) { }
+        public EGWalksDbContext(DbContextOptions<EGWalksDbContext> dbContextOptions) : base(dbContextOptions) { }
 
         public DbSet<Difficulty> Difficulties { get; set; }
 
